@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {createRef, useEffect, useState} from 'react';
-import InteractiveMap, {MapMouseEvent, NavigationControl, useControl} from 'react-map-gl';
+import InteractiveMap, {GeolocateControl, MapMouseEvent, NavigationControl, useControl} from 'react-map-gl';
 import {Layer} from "mapbox-gl";
 import {DeckProps} from "@deck.gl/core";
 import {MapboxOverlay} from "@deck.gl/mapbox";
@@ -8,12 +8,13 @@ import turfCentroid from '@turf/centroid';
 import {featureCollection} from '@turf/helpers';
 import {Feature, FeatureCollection, MultiPolygon, Point, Polygon} from 'geojson';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {BuildingsLayer, CityBoundaryLayer, ElectionCommissionLayer} from './layers';
+import {BuildingsLayer, CityBoundaryLayer, ElectionCommissionBoundaryLayer, ElectionCommissionLayer} from './layers';
 import useMapImage from "./image";
 // import MapiClient from "@mapbox/mapbox-sdk/lib/classes/mapi-client";
 import mbxDatasets from "@mapbox/mapbox-sdk/services/datasets";
 import axios from 'axios';
 import {ElectionCommissionBuilding, ElectionCommissionBuildingLayer} from "./deck-gl-layers";
+import {ElectionCommissionControl} from "./controls/ElectionCommissionControl";
 
 
 const accessToken = "pk.eyJ1Ijoia2xuNCIsImEiOiJjaW9sNjZlbWMwMDEwdzVtNmxxYjA2ZGozIn0.BytaphQwtjCVMGEaLlfb3Q";
@@ -34,6 +35,7 @@ const styleId = 'cl65cx61a000c15ljmv271d6d';
 const boundaryDatasetId = 'cly4bv93305ub1mocq5fyf8uq';
 const buildingDatasetId = 'clycqi0vyrak21tp8vcv2zixm';
 const electionCommissionDatasetId = 'clya1iza4qop51mp8z6rjg6l9';
+const electionCommissionBoundaryDatasetId = 'clyne7akr02l71omhcye06huh';
 const buildingDatasetUrl = `${process.env.PUBLIC_URL}/dataset/krylatskoe2024_buildings.geojson`
 
 function DeckGLOverlay(props: DeckProps) {
@@ -51,10 +53,12 @@ export default function Map(props: MapProps) {
     const [buildings, setBuildings] = useState(featureCollection([]));
     const [electionCommissions, setElectionCommissions] = useState(featureCollection([]));
     const [electionCommissionBuildings, setElectionCommissionBuildings] = useState([] as Array<ElectionCommissionBuilding>);
+    const [electionCommissionBoundary, setElectionCommissionBoundary] = useState(featureCollection([]));
     const [clickedBuilding, setClickedBuilding] = useState(null);
     const [hoveredBuilding, setHoveredBuilding] = useState(null);
     const [clickedElectionCommission, setClickedElectionCommission] = useState(null);
     const [hoveredElectionCommission, setHoveredElectionCommission] = useState(null);
+    const [visibilityElectionCommissionBoundary , setVisibilityElectionCommissionBoundary] = useState(false);
 
     useEffect(() => {
         datasetService
@@ -85,6 +89,16 @@ export default function Map(props: MapProps) {
                 response => {
                     let features: FeatureCollection<Point> = response.body
                     setElectionCommissions(features)
+                },
+                error => console.log(error)
+            )
+        datasetService
+            .listFeatures({datasetId: electionCommissionBoundaryDatasetId})
+            .send()
+            .then(
+                response => {
+                    let features: FeatureCollection<Polygon | MultiPolygon> = response.body
+                    setElectionCommissionBoundary(features)
                 },
                 error => console.log(error)
             )
@@ -125,6 +139,9 @@ export default function Map(props: MapProps) {
         setHoveredElectionCommission(null)
     }
 
+    let handleUikControlClick =
+        () => setVisibilityElectionCommissionBoundary((prev) => !prev)
+
     return (
             <InteractiveMap
                 mapboxAccessToken={accessToken}
@@ -142,6 +159,12 @@ export default function Map(props: MapProps) {
                 ref={mapRef as any}
             >
                 <NavigationControl/>
+                <GeolocateControl/>
+                <ElectionCommissionControl
+                    position="top-left"
+                    selected={visibilityElectionCommissionBoundary}
+                    onCLick={handleUikControlClick}
+                />
                 <CityBoundaryLayer featureCollection={boundary as FeatureCollection<Polygon | MultiPolygon>}/>
                 <BuildingsLayer featureCollection={buildings as FeatureCollection<Polygon | MultiPolygon>}
                                 clicked={clickedBuilding}
@@ -150,6 +173,10 @@ export default function Map(props: MapProps) {
                 <ElectionCommissionLayer featureCollection={electionCommissions as FeatureCollection<Point>}
                                          clicked={clickedElectionCommission}
                                          hovered={hoveredElectionCommission}
+                />
+                <ElectionCommissionBoundaryLayer
+                    featureCollection={electionCommissionBoundary as FeatureCollection<Polygon | MultiPolygon>}
+                    visibility={visibilityElectionCommissionBoundary}
                 />
                 <DeckGLOverlay
                     layers={[

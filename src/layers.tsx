@@ -120,6 +120,37 @@ function ElectionCommissionLayer(props: ElectionCommissionLayerProps) {
     )
 }
 
+export interface ElectionCommissionBoundaryLayerProps {
+    featureCollection: FeatureCollection<Polygon | MultiPolygon>
+    visibility: boolean
+}
+
+export function ElectionCommissionBoundaryLayer(props: ElectionCommissionBoundaryLayerProps) {
+    const visibility = props.visibility ? "visible" : "none"
+    const style: FillLayerSpecification = {
+        id: 'electionCommissionBoundary',
+        source: "electionCommissionBoundarySource",
+        type: "fill",
+        layout: {
+            "visibility": visibility,
+        },
+        paint: {
+            "fill-color": {
+                'property': 'color',
+                'type': 'identity'
+            },
+            "fill-opacity": 0.3,
+            "fill-outline-color": "black",
+        },
+    };
+    return (
+        <Source id="electionCommissionBoundarySource" type="geojson" data={props.featureCollection}>
+            <Layer {...style} />
+        </Source>
+    )
+}
+
+
 // export interface BuildingCentroidsLayerProps {
 //     features: Feature<GeometryObject>[];
 //     symbol?: boolean;

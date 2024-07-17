@@ -1,0 +1,7 @@
+.mapboxgl-ctrl button.mapboxgl-ctrl-election-commission .mapboxgl-ctrl-icon {
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg version='1.1' id='star' xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 15 15'%3E%3Cpath id='path4749-2-8-2' d='M7.5,0l-2,5h-5l4,3.5l-2,6l5-3.5&%23xA;&%23x9;l5,3.5l-2-6l4-3.5h-5L7.5,0z'/%3E%3C/svg%3E");
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-election-commission-selected .mapboxgl-ctrl-icon {
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg version='1.1' id='star' xmlns='http://www.w3.org/2000/svg' fill='red' width='18' height='18' viewBox='0 0 15 15'%3E%3Cpath id='path4749-2-8-2' d='M7.5,0l-2,5h-5l4,3.5l-2,6l5-3.5&%23xA;&%23x9;l5,3.5l-2-6l4-3.5h-5L7.5,0z'/%3E%3C/svg%3E");
+}
