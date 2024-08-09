@@ -24,19 +24,26 @@ const mapiClient = new MapiClient({accessToken})
 const datasetService = mbxDatasets(mapiClient);
 
 const mapProperties = {
-    longitude: 37.420573,
-    latitude: 55.737134,
-    zoom: 12,
-    pitch: 60,
-    bearing: 0
+    longitude: 37.8050,
+    latitude: 55.8104,
+    zoom: 12.5,
+    pitch: 50,
+    bearing: 260
 }
 
 const styleId = 'cl65cx61a000c15ljmv271d6d';
-const boundaryDatasetId = 'cly4bv93305ub1mocq5fyf8uq';
+
+const boundaryDatasetId = 'clzmpz9gw0ngb1ul9kk3pwc20';
+const buildingSourceUrl = "mapbox://kln4.03j8zzhz"
+const buildingSourceLayer = "krylatskoe2024_buildings-79ds1x"
 const buildingDatasetId = 'clycqi0vyrak21tp8vcv2zixm';
-const electionCommissionDatasetId = 'clya1iza4qop51mp8z6rjg6l9';
-const electionCommissionBoundaryDatasetId = 'clyne7akr02l71omhcye06huh';
 const buildingDatasetUrl = `${process.env.PUBLIC_URL}/dataset/krylatskoe2024_buildings.geojson`
+const electionCommissionSourceUrl = "mapbox://kln4.44qt15d9"
+const electionCommissionSourceLayer = "krylatskoe2024_uik-7pkv3s"
+const electionCommissionDatasetId = 'clya1iza4qop51mp8z6rjg6l9';
+const electionCommissionBoundarySourceUrl = "mapbox://kln4.3d10uul9"
+const electionCommissionBoundarySourceLayer = "krylatskoe2024_boundary-80ocdy"
+const electionCommissionBoundaryDatasetId = 'clyne7akr02l71omhcye06huh';
 
 function DeckGLOverlay(props: DeckProps) {
     const overlay = useControl<any>(() => new MapboxOverlay(props));
@@ -160,29 +167,29 @@ export default function Map(props: MapProps) {
             >
                 <NavigationControl/>
                 <GeolocateControl/>
-                <ElectionCommissionControl
-                    position="top-left"
-                    selected={visibilityElectionCommissionBoundary}
-                    onCLick={handleUikControlClick}
-                />
+                {/*<ElectionCommissionControl*/}
+                {/*    position="top-left"*/}
+                {/*    selected={visibilityElectionCommissionBoundary}*/}
+                {/*    onCLick={handleUikControlClick}*/}
+                {/*/>*/}
                 <CityBoundaryLayer featureCollection={boundary as FeatureCollection<Polygon | MultiPolygon>}/>
-                <BuildingsLayer featureCollection={buildings as FeatureCollection<Polygon | MultiPolygon>}
-                                clicked={clickedBuilding}
-                                hovered={hoveredBuilding}
-                />
-                <ElectionCommissionLayer featureCollection={electionCommissions as FeatureCollection<Point>}
-                                         clicked={clickedElectionCommission}
-                                         hovered={hoveredElectionCommission}
-                />
-                <ElectionCommissionBoundaryLayer
-                    featureCollection={electionCommissionBoundary as FeatureCollection<Polygon | MultiPolygon>}
-                    visibility={visibilityElectionCommissionBoundary}
-                />
-                <DeckGLOverlay
-                    layers={[
-                        new ElectionCommissionBuildingLayer(electionCommissionBuildings),
-                    ]}
-                />
+                {/*<BuildingsLayer featureCollection={buildings as FeatureCollection<Polygon | MultiPolygon>}*/}
+                {/*                clicked={clickedBuilding}*/}
+                {/*                hovered={hoveredBuilding}*/}
+                {/*/>*/}
+                {/*/!*<ElectionCommissionLayer featureCollection={electionCommissions as FeatureCollection<Point>}*!/*/}
+                {/*                         clicked={clickedElectionCommission}*/}
+                {/*                         hovered={hoveredElectionCommission}*/}
+                {/*/>*/}
+                {/*/!*<ElectionCommissionBoundaryLayer*!/*/}
+                {/*    featureCollection={electionCommissionBoundary as FeatureCollection<Polygon | MultiPolygon>}*/}
+                {/*    visibility={visibilityElectionCommissionBoundary}*/}
+                {/*/>*/}
+                {/*/!*<DeckGLOverlay*!/*/}
+                {/*    layers={[*/}
+                {/*        new ElectionCommissionBuildingLayer(electionCommissionBuildings),*/}
+                {/*    ]}*/}
+                {/*/>*/}
             </InteractiveMap>
     )
 }
