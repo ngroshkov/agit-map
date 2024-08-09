@@ -7,14 +7,15 @@ import {Feature, FeatureCollection, MultiPolygon, Point, Polygon} from 'geojson'
 import {
     SymbolLayerSpecification,
     FillExtrusionLayerSpecification,
-    FillLayerSpecification
+    FillLayerSpecification,
+    LineLayerSpecification
 } from "mapbox-gl";
 
 export interface CityBoundaryLayerProps {
     featureCollection: FeatureCollection<Polygon | MultiPolygon>;
 }
 
-function CityBoundaryLayer(props: CityBoundaryLayerProps) {
+export function CityBoundaryLayer(props: CityBoundaryLayerProps) {
     let boundary = null
     if (props.featureCollection.features[0]) {
         let feature = props.featureCollection.features[0] || {}
@@ -40,13 +41,34 @@ function CityBoundaryLayer(props: CityBoundaryLayerProps) {
     )
 }
 
+export interface DistrictBoundaryLayerProps {
+    featureCollection: FeatureCollection<Polygon | MultiPolygon>;
+}
+
+export function DistrictBoundaryLayer(props: DistrictBoundaryLayerProps) {
+    const style: LineLayerSpecification = {
+        id: 'districtBoundary',
+        source: "districtBoundarySource",
+        type: "line",
+        paint: {
+            "line-color": "black",
+            "line-opacity": 0.8,
+        }
+    };
+    return (
+        <Source id="districtBoundarySource" type="geojson" data={props.featureCollection}>
+            <Layer {...style} />
+        </Source>
+    )
+}
+
 export interface BuildingsLayerProps {
     featureCollection: FeatureCollection<Polygon | MultiPolygon>;
     clicked: Feature<Polygon | MultiPolygon> | null;
     hovered: Feature<Polygon | MultiPolygon> | null;
 }
 
-function BuildingsLayer(props: BuildingsLayerProps) {
+export function BuildingsLayer(props: BuildingsLayerProps) {
     let clickedId = props?.clicked?.properties?.id || 0
     let hoverId = props?.hovered?.properties?.id || 0
     const style: Partial<FillExtrusionLayerSpecification> = {
@@ -87,7 +109,7 @@ export interface ElectionCommissionLayerProps {
     hovered: Feature<Point> | null;
 }
 
-function ElectionCommissionLayer(props: ElectionCommissionLayerProps) {
+export function ElectionCommissionLayer(props: ElectionCommissionLayerProps) {
     let clickedId = props?.clicked?.properties?.id || 0
     let hoverId = props?.hovered?.properties?.id || 0
     let symbolStyle: SymbolLayerSpecification = {
@@ -189,5 +211,3 @@ export function ElectionCommissionBoundaryLayer(props: ElectionCommissionBoundar
 //         circlePaint={circlePaint}
 //     />);
 // }
-
-export {CityBoundaryLayer, BuildingsLayer, ElectionCommissionLayer}
