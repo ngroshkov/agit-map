@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/golyanovo2024-agit-map/static/css/main.bad793ee.css",
-    "main.js": "/golyanovo2024-agit-map/static/js/main.3e8cfd94.js",
+    "main.js": "/golyanovo2024-agit-map/static/js/main.36386304.js",
     "static/js/879.36d4c7f4.chunk.js": "/golyanovo2024-agit-map/static/js/879.36d4c7f4.chunk.js",
     "static/js/453.16f7cfac.chunk.js": "/golyanovo2024-agit-map/static/js/453.16f7cfac.chunk.js",
     "index.html": "/golyanovo2024-agit-map/index.html",
     "main.bad793ee.css.map": "/golyanovo2024-agit-map/static/css/main.bad793ee.css.map",
-    "main.3e8cfd94.js.map": "/golyanovo2024-agit-map/static/js/main.3e8cfd94.js.map",
+    "main.36386304.js.map": "/golyanovo2024-agit-map/static/js/main.36386304.js.map",
     "879.36d4c7f4.chunk.js.map": "/golyanovo2024-agit-map/static/js/879.36d4c7f4.chunk.js.map",
     "453.16f7cfac.chunk.js.map": "/golyanovo2024-agit-map/static/js/453.16f7cfac.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bad793ee.css",
-    "static/js/main.3e8cfd94.js"
+    "static/js/main.36386304.js"
   ]
 }
