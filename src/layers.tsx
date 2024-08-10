@@ -8,7 +8,6 @@ import {
     SymbolLayerSpecification,
     FillExtrusionLayerSpecification,
     FillLayerSpecification,
-    LineLayerSpecification
 } from "mapbox-gl";
 
 export interface CityBoundaryLayerProps {
@@ -36,27 +35,6 @@ export function CityBoundaryLayer(props: CityBoundaryLayerProps) {
     };
     return (
         <Source id="boundarySource" type="geojson" data={boundary}>
-            <Layer {...style} />
-        </Source>
-    )
-}
-
-export interface DistrictBoundaryLayerProps {
-    featureCollection: FeatureCollection<Polygon | MultiPolygon>;
-}
-
-export function DistrictBoundaryLayer(props: DistrictBoundaryLayerProps) {
-    const style: LineLayerSpecification = {
-        id: 'districtBoundary',
-        source: "districtBoundarySource",
-        type: "line",
-        paint: {
-            "line-color": "black",
-            "line-opacity": 0.8,
-        }
-    };
-    return (
-        <Source id="districtBoundarySource" type="geojson" data={props.featureCollection}>
             <Layer {...style} />
         </Source>
     )

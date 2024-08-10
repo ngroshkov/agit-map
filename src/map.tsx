@@ -11,7 +11,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import {
     BuildingsLayer,
     CityBoundaryLayer,
-    DistrictBoundaryLayer,
     ElectionCommissionBoundaryLayer,
     ElectionCommissionLayer
 } from './layers';
@@ -43,7 +42,6 @@ const boundaryDatasetId = 'clzmpz9gw0ngb1ul9kk3pwc20';
 const buildingSourceUrl = "mapbox://kln4.03j8zzhz"
 const buildingSourceLayer = "krylatskoe2024_buildings-79ds1x"
 const buildingDatasetId = 'clycqi0vyrak21tp8vcv2zixm';
-const districtBoundaryDatasetId = 'clzmw28s40ov61mmuhsgflrx9';
 const buildingDatasetUrl = `${process.env.PUBLIC_URL}/dataset/golyanovo2024_buildings.geojson`
 const electionCommissionSourceUrl = "mapbox://kln4.44qt15d9"
 const electionCommissionSourceLayer = "krylatskoe2024_uik-7pkv3s"
@@ -64,7 +62,6 @@ export interface MapProps {
 
 export default function Map(props: MapProps) {
     const [boundary, setBoundary] = useState(featureCollection([]));
-    const [districtBoundary, setDistrictBoundary] = useState(featureCollection([]));
     const [buildings, setBuildings] = useState(featureCollection([]));
     const [electionCommissions, setElectionCommissions] = useState(featureCollection([]));
     const [electionCommissionBuildings, setElectionCommissionBuildings] = useState([] as Array<ElectionCommissionBuilding>);
@@ -83,16 +80,6 @@ export default function Map(props: MapProps) {
                 response => {
                     let features: FeatureCollection<Polygon | MultiPolygon> = response.body
                     setBoundary(features)
-                },
-                error => console.log(error)
-            )
-        datasetService
-            .listFeatures({datasetId: districtBoundaryDatasetId})
-            .send()
-            .then(
-                response => {
-                    let features: FeatureCollection<Polygon | MultiPolygon> = response.body
-                    setDistrictBoundary(features)
                 },
                 error => console.log(error)
             )
@@ -191,7 +178,6 @@ export default function Map(props: MapProps) {
                 {/*    onCLick={handleUikControlClick}*/}
                 {/*/>*/}
                 <CityBoundaryLayer featureCollection={boundary as FeatureCollection<Polygon | MultiPolygon>}/>
-                <DistrictBoundaryLayer featureCollection={districtBoundary as FeatureCollection<Polygon | MultiPolygon>}/>
                 <BuildingsLayer featureCollection={buildings as FeatureCollection<Polygon | MultiPolygon>}
                                 clicked={clickedBuilding}
                                 hovered={hoveredBuilding}
