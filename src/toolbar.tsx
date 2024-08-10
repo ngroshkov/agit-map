@@ -32,7 +32,7 @@ export default function Toolbar(props: ToolbarProps) {
                 <b>УИК:</b> <span>№ {uik}</span> <br/>
                 {/*<b>Жителей:</b> {props.properties != null ? <span>{props.properties['address:residents']}</span> : ""}<br/>*/}
                 <b>Квартир:</b> <span>{flats}</span> <br/>
-                <b>Подъездов:</b> <span>{halls}</span><br/>
+                {/*<b>Подъездов:</b> <span>{halls}</span><br/>*/}
             </React.Fragment>
         )
     } else if (props.feature?.layer.id === "electionCommissions") {

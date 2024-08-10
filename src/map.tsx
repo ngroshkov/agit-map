@@ -44,7 +44,7 @@ const buildingSourceUrl = "mapbox://kln4.03j8zzhz"
 const buildingSourceLayer = "krylatskoe2024_buildings-79ds1x"
 const buildingDatasetId = 'clycqi0vyrak21tp8vcv2zixm';
 const districtBoundaryDatasetId = 'clzmw28s40ov61mmuhsgflrx9';
-const buildingDatasetUrl = `${process.env.PUBLIC_URL}/dataset/krylatskoe2024_buildings.geojson`
+const buildingDatasetUrl = `${process.env.PUBLIC_URL}/dataset/golyanovo2024_buildings.geojson`
 const electionCommissionSourceUrl = "mapbox://kln4.44qt15d9"
 const electionCommissionSourceLayer = "krylatskoe2024_uik-7pkv3s"
 const electionCommissionDatasetId = 'clya1iza4qop51mp8z6rjg6l9';
@@ -192,10 +192,10 @@ export default function Map(props: MapProps) {
                 {/*/>*/}
                 <CityBoundaryLayer featureCollection={boundary as FeatureCollection<Polygon | MultiPolygon>}/>
                 <DistrictBoundaryLayer featureCollection={districtBoundary as FeatureCollection<Polygon | MultiPolygon>}/>
-                {/*<BuildingsLayer featureCollection={buildings as FeatureCollection<Polygon | MultiPolygon>}*/}
-                {/*                clicked={clickedBuilding}*/}
-                {/*                hovered={hoveredBuilding}*/}
-                {/*/>*/}
+                <BuildingsLayer featureCollection={buildings as FeatureCollection<Polygon | MultiPolygon>}
+                                clicked={clickedBuilding}
+                                hovered={hoveredBuilding}
+                />
                 {/*/!*<ElectionCommissionLayer featureCollection={electionCommissions as FeatureCollection<Point>}*!/*/}
                 {/*                         clicked={clickedElectionCommission}*/}
                 {/*                         hovered={hoveredElectionCommission}*/}

@@ -15,7 +15,7 @@ export default function App() {
     return (
         <div style={style}>
             <Map onClick={handleClick}/>
-            {/*<Toolbar feature={feature}/>*/}
+            <Toolbar feature={feature}/>
         </div>
     )
 }
