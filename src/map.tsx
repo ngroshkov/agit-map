@@ -45,7 +45,7 @@ const buildingDatasetId = 'clycqi0vyrak21tp8vcv2zixm';
 const buildingDatasetUrl = `${process.env.PUBLIC_URL}/dataset/golyanovo2024_buildings.geojson`
 const electionCommissionSourceUrl = "mapbox://kln4.44qt15d9"
 const electionCommissionSourceLayer = "krylatskoe2024_uik-7pkv3s"
-const electionCommissionDatasetId = 'clya1iza4qop51mp8z6rjg6l9';
+const electionCommissionDatasetId = 'clzoncuxn5sbe1tp11gcezkls';
 const electionCommissionBoundarySourceUrl = "mapbox://kln4.3d10uul9"
 const electionCommissionBoundarySourceLayer = "krylatskoe2024_boundary-80ocdy"
 const electionCommissionBoundaryDatasetId = 'clyne7akr02l71omhcye06huh';
@@ -182,19 +182,19 @@ export default function Map(props: MapProps) {
                                 clicked={clickedBuilding}
                                 hovered={hoveredBuilding}
                 />
-                {/*/!*<ElectionCommissionLayer featureCollection={electionCommissions as FeatureCollection<Point>}*!/*/}
-                {/*                         clicked={clickedElectionCommission}*/}
-                {/*                         hovered={hoveredElectionCommission}*/}
-                {/*/>*/}
+                <ElectionCommissionLayer featureCollection={electionCommissions as FeatureCollection<Point>}
+                                         clicked={clickedElectionCommission}
+                                         hovered={hoveredElectionCommission}
+                />
                 {/*/!*<ElectionCommissionBoundaryLayer*!/*/}
                 {/*    featureCollection={electionCommissionBoundary as FeatureCollection<Polygon | MultiPolygon>}*/}
                 {/*    visibility={visibilityElectionCommissionBoundary}*/}
                 {/*/>*/}
-                {/*/!*<DeckGLOverlay*!/*/}
-                {/*    layers={[*/}
-                {/*        new ElectionCommissionBuildingLayer(electionCommissionBuildings),*/}
-                {/*    ]}*/}
-                {/*/>*/}
+                <DeckGLOverlay
+                    layers={[
+                        new ElectionCommissionBuildingLayer(electionCommissionBuildings),
+                    ]}
+                />
             </InteractiveMap>
     )
 }
