@@ -48,7 +48,7 @@ const electionCommissionSourceLayer = "krylatskoe2024_uik-7pkv3s"
 const electionCommissionDatasetId = 'clzoncuxn5sbe1tp11gcezkls';
 const electionCommissionBoundarySourceUrl = "mapbox://kln4.3d10uul9"
 const electionCommissionBoundarySourceLayer = "krylatskoe2024_boundary-80ocdy"
-const electionCommissionBoundaryDatasetId = 'clyne7akr02l71omhcye06huh';
+const electionCommissionBoundaryDatasetId = 'clzpanb3q196z1mmheh9gqerf';
 
 function DeckGLOverlay(props: DeckProps) {
     const overlay = useControl<any>(() => new MapboxOverlay(props));
@@ -172,11 +172,11 @@ export default function Map(props: MapProps) {
             >
                 <NavigationControl/>
                 <GeolocateControl/>
-                {/*<ElectionCommissionControl*/}
-                {/*    position="top-left"*/}
-                {/*    selected={visibilityElectionCommissionBoundary}*/}
-                {/*    onCLick={handleUikControlClick}*/}
-                {/*/>*/}
+                <ElectionCommissionControl
+                    position="top-left"
+                    selected={visibilityElectionCommissionBoundary}
+                    onCLick={handleUikControlClick}
+                />
                 <CityBoundaryLayer featureCollection={boundary as FeatureCollection<Polygon | MultiPolygon>}/>
                 <BuildingsLayer featureCollection={buildings as FeatureCollection<Polygon | MultiPolygon>}
                                 clicked={clickedBuilding}
@@ -186,10 +186,10 @@ export default function Map(props: MapProps) {
                                          clicked={clickedElectionCommission}
                                          hovered={hoveredElectionCommission}
                 />
-                {/*/!*<ElectionCommissionBoundaryLayer*!/*/}
-                {/*    featureCollection={electionCommissionBoundary as FeatureCollection<Polygon | MultiPolygon>}*/}
-                {/*    visibility={visibilityElectionCommissionBoundary}*/}
-                {/*/>*/}
+                <ElectionCommissionBoundaryLayer
+                    featureCollection={electionCommissionBoundary as FeatureCollection<Polygon | MultiPolygon>}
+                    visibility={visibilityElectionCommissionBoundary}
+                />
                 <DeckGLOverlay
                     layers={[
                         new ElectionCommissionBuildingLayer(electionCommissionBuildings),
