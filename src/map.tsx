@@ -140,7 +140,7 @@ export default function Map(props: MapProps) {
             electionCommissionBuildings = [new ElectionCommissionBuilding(buildingFeature)]
         } else if (electionCommissionFeature) {
             electionCommissionBuildings = buildings.features
-                .filter(f => f?.properties?.uik_number === electionCommissionFeature?.properties?.uik)
+                .filter(f => f?.properties?.uik === electionCommissionFeature?.properties?.uik)
                 .map(f => new ElectionCommissionBuilding(f))
         }
         props.onClick(buildingFeature || electionCommissionFeature)
