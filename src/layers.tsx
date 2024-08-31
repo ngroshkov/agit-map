@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Layer, Source} from 'react-map-gl';
 import turfBboxPolygon from '@turf/bbox-polygon';
 import turfDifference from '@turf/difference';
+import turfCenterOfMass from '@turf/center-of-mass';
 import {featureCollection} from '@turf/helpers';
 import {Feature, FeatureCollection, MultiPolygon, Point, Polygon} from 'geojson';
 import {
@@ -58,7 +59,7 @@ export function BuildingsLayer(props: BuildingsLayerProps) {
                 'type': 'identity'
             },
             'fill-extrusion-height': {
-                'property':  'building:level',
+                'property': 'building:level',
                 'type': 'identity'
             },
             'fill-extrusion-base': {
@@ -145,6 +146,41 @@ export function ElectionCommissionBoundaryLayer(props: ElectionCommissionBoundar
     };
     return (
         <Source id="electionCommissionBoundarySource" type="geojson" data={props.featureCollection}>
+            <Layer {...style} />
+        </Source>
+    )
+}
+
+export interface ElectionCommissionCentroidLayerProps {
+    featureCollection: FeatureCollection<Polygon | MultiPolygon>
+}
+
+export function ElectionCommissionCentroidLayer(props: ElectionCommissionCentroidLayerProps) {
+    const centroidsFeatures = props.featureCollection.features
+        .map(f => turfCenterOfMass(f, {properties: f.properties}))
+    const centroids = featureCollection(centroidsFeatures)
+    const style: SymbolLayerSpecification = {
+        id: 'electionCommissionCentroid',
+        source: "electionCommissionCentroidSource",
+        type: "symbol",
+        layout: {
+            'text-field': {
+                'property': 'uik',
+                'type': 'identity'
+            },
+            'text-font': [
+                'literal',
+                ['Arial Unicode MS Bold']
+            ],
+
+            'text-size': ['interpolate', ['linear'], ['zoom'], 10, 8, 20, 28],
+        },
+        paint: {
+            'text-color':  '#2f4f4f'
+        }
+    }
+    return (
+        <Source id="electionCommissionCentroidSource" type="geojson" data={centroids}>
             <Layer {...style} />
         </Source>
     )

@@ -11,7 +11,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import {
     BuildingsLayer,
     CityBoundaryLayer,
-    ElectionCommissionBoundaryLayer,
+    ElectionCommissionBoundaryLayer, ElectionCommissionCentroidLayer,
     ElectionCommissionLayer
 } from './layers';
 import useMapImage from "./image";
@@ -70,7 +70,7 @@ export default function Map(props: MapProps) {
     const [hoveredBuilding, setHoveredBuilding] = useState(null);
     const [clickedElectionCommission, setClickedElectionCommission] = useState(null);
     const [hoveredElectionCommission, setHoveredElectionCommission] = useState(null);
-    const [visibilityElectionCommissionBoundary , setVisibilityElectionCommissionBoundary] = useState(false);
+    const [visibilityElectionCommissionBoundary , setVisibilityElectionCommissionBoundary] = useState(true);
 
     useEffect(() => {
         datasetService
@@ -189,6 +189,9 @@ export default function Map(props: MapProps) {
                 <ElectionCommissionBoundaryLayer
                     featureCollection={electionCommissionBoundary as FeatureCollection<Polygon | MultiPolygon>}
                     visibility={visibilityElectionCommissionBoundary}
+                />
+                <ElectionCommissionCentroidLayer
+                    featureCollection={electionCommissionBoundary as FeatureCollection<Polygon | MultiPolygon>}
                 />
                 <DeckGLOverlay
                     layers={[
