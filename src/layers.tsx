@@ -137,11 +137,11 @@ export function ElectionCommissionBoundaryLayer(props: ElectionCommissionBoundar
         },
         paint: {
             "fill-color": {
-                'property': 'color',
-                'type': 'identity'
+                'property': 'result',
+                'stops': [[0, "#ffffff"], [0.3, "#ff0000"]],
             },
-            "fill-opacity": 0.3,
-            "fill-outline-color": "black",
+            "fill-opacity": 0.7,
+            "fill-outline-color": "red",
         },
     };
     return (
@@ -157,7 +157,7 @@ export interface ElectionCommissionCentroidLayerProps {
 
 export function ElectionCommissionCentroidLayer(props: ElectionCommissionCentroidLayerProps) {
     const centroidsFeatures = props.featureCollection.features
-        .map(f => turfCenterOfMass(f, {properties: f.properties}))
+        .map(f => turfCenterOfMass(f, {properties: {...f.properties, title: f.properties?.uik + "\n" + f.properties?.result}}))
     const centroids = featureCollection(centroidsFeatures)
     const style: SymbolLayerSpecification = {
         id: 'electionCommissionCentroid',
@@ -165,7 +165,7 @@ export function ElectionCommissionCentroidLayer(props: ElectionCommissionCentroi
         type: "symbol",
         layout: {
             'text-field': {
-                'property': 'uik',
+                'property': 'title',
                 'type': 'identity'
             },
             'text-font': [

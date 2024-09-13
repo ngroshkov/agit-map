@@ -39,12 +39,14 @@ export default function Toolbar(props: ToolbarProps) {
         const description = props?.feature?.properties?.['description'] || "";
         const address = props?.feature?.properties?.['address'] || "";
         const phone = props?.feature?.properties?.['phone'] || "";
+        const result = props?.feature?.properties?.['result'] || "";
         title = props?.feature?.properties?.['name'] || "";
         content = (
             <React.Fragment>
                 <b>Учреждение:</b> <span>{description}</span> <br/>
                 <b>Адрес:</b> <span>{address}</span> <br/>
                 <b>Телефон:</b> <span>{phone}</span><br/>
+                <b>Результат:</b> <span>{result}</span><br/>
             </React.Fragment>
         )
     }
