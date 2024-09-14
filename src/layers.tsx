@@ -157,7 +157,7 @@ export interface ElectionCommissionCentroidLayerProps {
 
 export function ElectionCommissionCentroidLayer(props: ElectionCommissionCentroidLayerProps) {
     const centroidsFeatures = props.featureCollection.features
-        .map(f => turfCenterOfMass(f, {properties: {...f.properties, title: f.properties?.uik + "\n" + f.properties?.result}}))
+        .map(f => turfCenterOfMass(f, {properties: {...f.properties, title: f.properties?.uik + "\n" + (f.properties?.result*100).toFixed(1) + "%"}}))
     const centroids = featureCollection(centroidsFeatures)
     const style: SymbolLayerSpecification = {
         id: 'electionCommissionCentroid',
