@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Layer, Source} from 'react-map-gl';
 import turfBboxPolygon from '@turf/bbox-polygon';
 import turfDifference from '@turf/difference';
-import turfCenterOfMass from '@turf/center-of-mass';
 import {featureCollection} from '@turf/helpers';
 import {Feature, FeatureCollection, MultiPolygon, Point, Polygon} from 'geojson';
 import {
@@ -42,7 +41,8 @@ export function CityBoundaryLayer(props: CityBoundaryLayerProps) {
 }
 
 export interface BuildingsLayerProps {
-    featureCollection: FeatureCollection<Polygon | MultiPolygon>;
+    url: string
+    sourceLayer: string
     clicked: Feature<Polygon | MultiPolygon> | null;
     hovered: Feature<Polygon | MultiPolygon> | null;
 }
@@ -68,30 +68,35 @@ export function BuildingsLayer(props: BuildingsLayerProps) {
             },
         }
     }
-    let buildingStyle: any = {...style, ...{id: 'buildings'}, ...{paint: {...style.paint, ...{'fill-extrusion-opacity': 0.5}}}}
-    let clickedStyle: any = {...style, ...{id: 'clickedBuildings'}, ...{paint: {...style.paint, ...{'fill-extrusion-opacity': 1}}}}
-    let hoveredStyle: any = {...style, ...{id: 'hoveredBuildings'}, ...{paint: {...style.paint, ...{'fill-extrusion-opacity': 0.8}}}}
+    let buildingStyle: any = {...style, ...{paint: {...style.paint, ...{'fill-extrusion-opacity': 0.5}}}}
+    let clickedStyle: any = {...style, ...{paint: {...style.paint, ...{'fill-extrusion-opacity': 1}}}}
+    let hoveredStyle: any = {...style, ...{paint: {...style.paint, ...{'fill-extrusion-opacity': 0.8}}}}
     return (
         <React.Fragment>
-            <Source id="buildingsSource" type="geojson" data={props.featureCollection}>
-                <Layer {...buildingStyle} />
-                <Layer {...clickedStyle} filter={['==', 'id', clickedId]}/>
-                <Layer {...hoveredStyle} filter={['==', 'id', hoverId]}/>
+            <Source id="buildingsSource" type="vector" url={props.url}>
+                <Layer id={'buildings'} source-layer={props.sourceLayer} {...buildingStyle}/>
+                <Layer id={'clickedBuildings'} source-layer={props.sourceLayer} {...clickedStyle} filter={['==', 'id', clickedId]}/>
+                <Layer id={'hoveredBuildings'} source-layer={props.sourceLayer} {...hoveredStyle} filter={['==', 'id', hoverId]}/>
             </Source>
         </React.Fragment>
     )
 }
 
 export interface ElectionCommissionLayerProps {
-    featureCollection: FeatureCollection<Point>;
+    url: string
+    sourceLayer: string
+    boundarySourceLayer: string
+    boundaryCentroidSourceLayer: string
     clicked: Feature<Point> | null;
     hovered: Feature<Point> | null;
+    boundaryVisibility: boolean
 }
 
 export function ElectionCommissionLayer(props: ElectionCommissionLayerProps) {
-    let clickedId = props?.clicked?.properties?.id || 0
-    let hoverId = props?.hovered?.properties?.id || 0
-    let symbolStyle: SymbolLayerSpecification = {
+    const clickedId = props?.clicked?.properties?.id || 0
+    const hoverId = props?.hovered?.properties?.id || 0
+    const boundaryVisibility = props.boundaryVisibility ? "visible" : "none"
+    let electionCommissionStyle: SymbolLayerSpecification = {
         id: 'electionCommissions',
         source: "electionCommissionSource",
         type: "symbol",
@@ -112,28 +117,12 @@ export function ElectionCommissionLayer(props: ElectionCommissionLayerProps) {
             ],
         }
     }
-    return (
-        <React.Fragment>
-            <Source id="electionCommissionSource" type="geojson" data={props.featureCollection}>
-                <Layer {...symbolStyle} />
-            </Source>
-        </React.Fragment>
-    )
-}
-
-export interface ElectionCommissionBoundaryLayerProps {
-    featureCollection: FeatureCollection<Polygon | MultiPolygon>
-    visibility: boolean
-}
-
-export function ElectionCommissionBoundaryLayer(props: ElectionCommissionBoundaryLayerProps) {
-    const visibility = props.visibility ? "visible" : "none"
-    const style: FillLayerSpecification = {
+    const electionCommissionBoundaryStyle: FillLayerSpecification = {
         id: 'electionCommissionBoundary',
         source: "electionCommissionBoundarySource",
         type: "fill",
         layout: {
-            "visibility": visibility,
+            "visibility": boundaryVisibility,
         },
         paint: {
             "fill-color": {
@@ -144,30 +133,12 @@ export function ElectionCommissionBoundaryLayer(props: ElectionCommissionBoundar
             "fill-outline-color": "red",
         },
     };
-    return (
-        <Source id="electionCommissionBoundarySource" type="geojson" data={props.featureCollection}>
-            <Layer {...style} />
-        </Source>
-    )
-}
-
-export interface ElectionCommissionCentroidLayerProps {
-    featureCollection: FeatureCollection<Polygon | MultiPolygon>
-}
-
-export function ElectionCommissionCentroidLayer(props: ElectionCommissionCentroidLayerProps) {
-    const centroidsFeatures = props.featureCollection.features
-        .map(f => turfCenterOfMass(f, {properties: {...f.properties, title: f.properties?.uik + "\n" + (f.properties?.result*100).toFixed(1) + "%"}}))
-    const centroids = featureCollection(centroidsFeatures)
-    const style: SymbolLayerSpecification = {
+    const electionCommissionBoundaryCentroidStyle: SymbolLayerSpecification = {
         id: 'electionCommissionCentroid',
         source: "electionCommissionCentroidSource",
         type: "symbol",
         layout: {
-            'text-field': {
-                'property': 'title',
-                'type': 'identity'
-            },
+            'text-field': ["concat", ["get", "uik"], "\n", [ "/", ["round", ["*", ["get", "result"], 1000]], 10], "%"],
             'text-font': [
                 'literal',
                 ['Arial Unicode MS Bold']
@@ -178,50 +149,14 @@ export function ElectionCommissionCentroidLayer(props: ElectionCommissionCentroi
         paint: {
             'text-color':  '#2f4f4f'
         }
-    }
+    };
     return (
-        <Source id="electionCommissionCentroidSource" type="geojson" data={centroids}>
-            <Layer {...style} />
-        </Source>
+        <React.Fragment>
+            <Source id="electionCommissionSource" type="vector" url={props.url}>
+                <Layer source-layer={props.sourceLayer} {...electionCommissionStyle} />
+                <Layer source-layer={props.boundarySourceLayer} {...electionCommissionBoundaryStyle} />
+                <Layer source-layer={props.boundaryCentroidSourceLayer} {...electionCommissionBoundaryCentroidStyle} />
+            </Source>
+        </React.Fragment>
     )
 }
-
-
-// export interface BuildingCentroidsLayerProps {
-//     features: Feature<GeometryObject>[];
-//     symbol?: boolean;
-//     circle?: boolean;
-// }
-//
-// function BuildingCentroidsLayer(props: BuildingCentroidsLayerProps) {
-//     let symbolLayout = props.symbol ? {
-//         'text-field': {
-//             'property': 'contacts_count',
-//             'type': 'identity'
-//         },
-//         'text-font': [
-//             'literal',
-//             ['Arial Unicode MS Bold']
-//         ],
-//         'text-size': 10
-//     } : null
-//     let symbolPaint = props.symbol ? {
-//         'text-color': ['case', ['==', ['get', 'contacts_count'], 0], 'red', 'black']
-//     } : null
-//     let circlePaint = props.circle ? {
-//         'circle-color': "#FFFFFF",
-//         'circle-radius': 7,
-//         'circle-stroke-color': "black",
-//         'circle-stroke-width': 0.5,
-//     } : null
-//
-//     return (<GeoJSONLayer
-//         data={{
-//             'type': 'FeatureCollection',
-//             'features': props.features
-//         }}
-//         symbolLayout={symbolLayout}
-//         symbolPaint={symbolPaint}
-//         circlePaint={circlePaint}
-//     />);
-// }
