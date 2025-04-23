@@ -1,8 +1,8 @@
 {
-  "name": "golyanovo2024-agit-map",
+  "name": "agit-map",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ngroshkov.github.io/golyanovo2024-agit-map",
+  "homepage": "https://ngroshkov.github.io/agit-map",
   "dependencies": {
     "@deck.gl/core": "^9.0.21",
     "@deck.gl/geo-layers": "^9.0.21",
