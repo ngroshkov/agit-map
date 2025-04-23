@@ -2,15 +2,14 @@
 
 https://ngroshkov.github.io/agit-map
 
-Simple custom web map application to support a field canvassing effort used by local self-organised activists during the campaign for the Moscow City Parliament.
+Simple custom web map application to support a field canvassing effort used by local self-organised activists during 
+the campaign for the Moscow City Parliament.
 
 App Tools: Mapbox, MBTiles, Typescript, React, react-map-gl, deck.gl, GitHub Pages
 Data Sources: OpenStreetMap, Local electoral district boundaries, Local Election Commissions 
 Data Management Tools: QGIS, Google Geocoding API, Kotlin DataFrame
 
-<img src="img/screen1.jpg" width=30%>
-<img src="img/screen2.jpg" width=30%>
-<img src="img/screen3.jpg" width=30%>
+<img src="img/screen1.jpg" width=30%> <img src="img/screen2.jpg" width=30%> <img src="img/screen3.jpg" width=30%>
 
 
 ## Getting Started with Create React App
