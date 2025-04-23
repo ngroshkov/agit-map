@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/golyanovo2024-agit-map/static/css/main.fb834509.css",
-    "main.js": "/golyanovo2024-agit-map/static/js/main.6a21459c.js",
-    "static/js/879.36d4c7f4.chunk.js": "/golyanovo2024-agit-map/static/js/879.36d4c7f4.chunk.js",
-    "static/js/453.2da4e3bc.chunk.js": "/golyanovo2024-agit-map/static/js/453.2da4e3bc.chunk.js",
-    "index.html": "/golyanovo2024-agit-map/index.html",
-    "main.fb834509.css.map": "/golyanovo2024-agit-map/static/css/main.fb834509.css.map",
-    "main.6a21459c.js.map": "/golyanovo2024-agit-map/static/js/main.6a21459c.js.map",
-    "879.36d4c7f4.chunk.js.map": "/golyanovo2024-agit-map/static/js/879.36d4c7f4.chunk.js.map",
-    "453.2da4e3bc.chunk.js.map": "/golyanovo2024-agit-map/static/js/453.2da4e3bc.chunk.js.map"
+    "main.css": "/agit-map/static/css/main.fb834509.css",
+    "main.js": "/agit-map/static/js/main.c8894d95.js",
+    "static/js/879.03587ddc.chunk.js": "/agit-map/static/js/879.03587ddc.chunk.js",
+    "static/js/453.3113a894.chunk.js": "/agit-map/static/js/453.3113a894.chunk.js",
+    "index.html": "/agit-map/index.html",
+    "main.fb834509.css.map": "/agit-map/static/css/main.fb834509.css.map",
+    "main.c8894d95.js.map": "/agit-map/static/js/main.c8894d95.js.map",
+    "879.03587ddc.chunk.js.map": "/agit-map/static/js/879.03587ddc.chunk.js.map",
+    "453.3113a894.chunk.js.map": "/agit-map/static/js/453.3113a894.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.fb834509.css",
-    "static/js/main.6a21459c.js"
+    "static/js/main.c8894d95.js"
   ]
 }
